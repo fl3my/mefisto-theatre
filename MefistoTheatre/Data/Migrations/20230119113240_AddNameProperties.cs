@@ -4,7 +4,7 @@
 
 namespace MefistoTheatre.Data.Migrations
 {
-    public partial class Addednameproperties : Migration
+    public partial class AddNameProperties : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

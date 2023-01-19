@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MefistoTheatre.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230118122700_Added name properties")]
-    partial class Addednameproperties
+    [Migration("20230119113240_AddNameProperties")]
+    partial class AddNameProperties
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
