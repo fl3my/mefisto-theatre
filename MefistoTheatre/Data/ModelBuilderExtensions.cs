@@ -24,18 +24,18 @@ namespace MefistoTheatre.Data
             {
                 new ApplicationUser
                 {
-                    UserName = "superadmin@mefisto.com",
-                    NormalizedUserName = "SUPERADMIN@MEFISTO.COM",
-                    Email = "superadmin@mefisto.com",
-                    NormalizedEmail = "SUPERADMIN@MEFISTO.COM",
-                    EmailConfirmed = true,
-                },
-                new ApplicationUser
-                {
                     UserName = "admin@mefisto.com",
                     NormalizedUserName = "ADMIN@MEFISTO.COM",
                     Email = "admin@mefisto.com",
                     NormalizedEmail = "ADMIN@MEFISTO.COM",
+                    EmailConfirmed = true,
+                },
+                new ApplicationUser
+                {
+                    UserName = "editor@mefisto.com",
+                    NormalizedUserName = "EDITOR@MEFISTO.COM",
+                    Email = "editor@mefisto.com",
+                    NormalizedEmail = "EDITOR@MEFISTO.COM",
                     EmailConfirmed = true,
                 },
                 new ApplicationUser
@@ -60,8 +60,8 @@ namespace MefistoTheatre.Data
 
             // Add hashed passwords to the users.
             var passwordHasher = new PasswordHasher<ApplicationUser>();
-            users[0].PasswordHash = passwordHasher.HashPassword(users[0], "SuperAdmin123!");
-            users[1].PasswordHash = passwordHasher.HashPassword(users[1], "Admin123!");
+            users[0].PasswordHash = passwordHasher.HashPassword(users[0], "Admin123!");
+            users[1].PasswordHash = passwordHasher.HashPassword(users[1], "Editor123!");
             users[2].PasswordHash = passwordHasher.HashPassword(users[2], "Staff123!");
             users[3].PasswordHash = passwordHasher.HashPassword(users[3], "Basic123!");
 
@@ -71,12 +71,12 @@ namespace MefistoTheatre.Data
             userRoles.Add(new IdentityUserRole<string>
             {
                 UserId = users[0].Id,
-                RoleId = roles.First(r => r.Name == "SuperAdmin").Id
+                RoleId = roles.First(r => r.Name == "Admin").Id
             });
             userRoles.Add(new IdentityUserRole<string>
             {
                 UserId = users[1].Id,
-                RoleId = roles.First(r => r.Name == "Admin").Id
+                RoleId = roles.First(r => r.Name == "Editor").Id
             });
             userRoles.Add(new IdentityUserRole<string>
             {
