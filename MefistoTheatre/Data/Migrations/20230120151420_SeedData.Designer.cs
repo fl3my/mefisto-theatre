@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MefistoTheatre.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230119130942_SeedUserData")]
-    partial class SeedUserData
+    [Migration("20230120151420_SeedData")]
+    partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -97,65 +97,65 @@ namespace MefistoTheatre.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "632c02a3-f309-479a-97b8-613906884c8a",
+                            Id = "fc3eb3b0-d95e-4172-8338-3cfa6ad1239b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "676ad9f2-2ca5-4835-a2ac-3d4ca48d8566",
-                            Email = "superadmin@mefisto.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "SUPERADMIN@MEFISTO.COM",
-                            NormalizedUserName = "SUPERADMIN@MEFISTO.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMH28Rl2yIVinshZCyJ6xTHeAnD9p0rlRREGKrrsaufZVOdKErMqi+JqzWmMo+TzGw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "26e2ce47-abb0-4933-b996-8db5576f30d8",
-                            TwoFactorEnabled = false,
-                            UserName = "superadmin@mefisto.com"
-                        },
-                        new
-                        {
-                            Id = "3cd42b78-ade8-4151-af9e-0f18a629faec",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "4bec9f3c-dbc1-48fb-98e8-a4a4651942d3",
+                            ConcurrencyStamp = "ebee6c8e-d1dd-4241-ba9e-c0e8191257a5",
                             Email = "admin@mefisto.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MEFISTO.COM",
                             NormalizedUserName = "ADMIN@MEFISTO.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOnVkq1hSRiojXER45WA6i56idqtPCxLJcoU1bsP8+PnR+KMnhISYp+zEXQdAXs2hQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBaAK8z7h2t2que29xzGyHSdZYDV/WHUMMw3Rs+AeP+sVnS3wnJlWcv2fP175Yjf8g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "310cc357-7129-415e-8587-35a0db1084f0",
+                            SecurityStamp = "c8dab608-5e9e-4d66-b894-48e7ce33bd70",
                             TwoFactorEnabled = false,
                             UserName = "admin@mefisto.com"
                         },
                         new
                         {
-                            Id = "83eac18f-647a-4400-94c7-87caa344cb67",
+                            Id = "ebb7e8be-5379-498a-baef-9d589bb18fbe",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dc880794-dbf6-42f3-8979-2dc6b60c7313",
+                            ConcurrencyStamp = "d4ee4d44-8106-43e7-bd06-2bb248e85970",
+                            Email = "editor@mefisto.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "EDITOR@MEFISTO.COM",
+                            NormalizedUserName = "EDITOR@MEFISTO.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFeGLZ+JA4nkSPDkfj2qn3hUS/JOPj8e3brQHs/WWIQA47HXYBogDgvCSPJhDzjBpQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "f1db8ba4-df9c-461d-8251-b86f6926cfdf",
+                            TwoFactorEnabled = false,
+                            UserName = "editor@mefisto.com"
+                        },
+                        new
+                        {
+                            Id = "5c725ddb-54c0-4f09-8382-d0c00196bb3a",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "6cc9b453-a5e3-4bbe-bbdc-2d1ba5f027b7",
                             Email = "staff@mefisto.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "STAFF@MEFISTO.COM",
                             NormalizedUserName = "STAFF@MEFISTO.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIVLMg2zhTbXbbAQoojWi0Z9pJLLATOYi4wjThHBJ1sff6gid30pyv/QyeNNlTWGuQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEES3Q6K9m9etfeeq1WR5NRKZqfzj6yacTyiC0tdHnupJkR/8VQVuKLvOTEcatqvCrw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cef31a8b-68e8-4f12-8b5a-dfdbbbd8f6c0",
+                            SecurityStamp = "0ed5b109-54ba-4354-81ed-d47ef530ee09",
                             TwoFactorEnabled = false,
                             UserName = "staff@mefisto.com"
                         },
                         new
                         {
-                            Id = "9f9762a2-1caf-425f-8497-9b97776e725e",
+                            Id = "fa4315ef-cfaf-4c49-a22c-f46d9e3a2529",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "920b31ab-b262-45fe-a009-6c88939fecab",
+                            ConcurrencyStamp = "2dc46547-0d8a-48b7-97bb-259b7cc44f21",
                             Email = "basic@basic.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "BASIC@BASIC.COM",
                             NormalizedUserName = "BASIC@BASIC.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECJrBa6OvtuS9fHlx8rmNG7RM0nwOi9hbmLo4dqEQ0qWsiMIHMDVAvt3z+GtAv8mOA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECD1TteiXvQAB4WXDEFJJxm/nEgsEUFXtFailTFulFtWFKgqT4yhoR1qI47Nk72lDw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a03dc394-e300-484f-88f5-a2f21a47bd1e",
+                            SecurityStamp = "6e66e615-4283-45a4-9051-97020ef52925",
                             TwoFactorEnabled = false,
                             UserName = "basic@basic.com"
                         });
@@ -190,29 +190,29 @@ namespace MefistoTheatre.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "30decc32-1c97-4b6d-a03e-34b5f322e05e",
-                            ConcurrencyStamp = "6ffad12c-d3ae-4370-8ea9-7dc6c6176848",
-                            Name = "SuperAdmin",
-                            NormalizedName = "SUPERADMIN"
-                        },
-                        new
-                        {
-                            Id = "2f4eae13-3357-42fb-8653-b71ea140f8f1",
-                            ConcurrencyStamp = "6a184501-9158-4a18-92c5-4284c1a16e7d",
+                            Id = "5ac28e47-e0da-457d-b4c4-280ce73e08e1",
+                            ConcurrencyStamp = "00b7f372-7892-4cb4-9718-2835e91ca584",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "dc93dd4b-5dec-44e8-804e-af814eed1cd4",
-                            ConcurrencyStamp = "b1d94f00-bb63-4c29-af37-a5d3acfbc99a",
+                            Id = "be539ba6-e42a-4fe8-933b-aa1ffe68162c",
+                            ConcurrencyStamp = "bef6dd52-33dc-4e55-89ed-2bf1125c7365",
+                            Name = "Editor",
+                            NormalizedName = "EDITOR"
+                        },
+                        new
+                        {
+                            Id = "bbb48dfb-0d0b-48e1-a299-3adcaa3e7ce9",
+                            ConcurrencyStamp = "18e26552-1924-429d-9a8c-6b5a782b7664",
                             Name = "Staff",
                             NormalizedName = "STAFF"
                         },
                         new
                         {
-                            Id = "070b7596-c5f5-4866-80d6-30b5743c35fd",
-                            ConcurrencyStamp = "f292133f-e0c7-47e2-a5fd-5e3cb29f1611",
+                            Id = "a98cc1f1-ac15-404a-a01b-518b012eaa8b",
+                            ConcurrencyStamp = "0b7ccbea-80eb-4d0c-a71b-4731b593dfef",
                             Name = "Basic",
                             NormalizedName = "BASIC"
                         });
@@ -309,23 +309,23 @@ namespace MefistoTheatre.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "632c02a3-f309-479a-97b8-613906884c8a",
-                            RoleId = "30decc32-1c97-4b6d-a03e-34b5f322e05e"
+                            UserId = "fc3eb3b0-d95e-4172-8338-3cfa6ad1239b",
+                            RoleId = "5ac28e47-e0da-457d-b4c4-280ce73e08e1"
                         },
                         new
                         {
-                            UserId = "3cd42b78-ade8-4151-af9e-0f18a629faec",
-                            RoleId = "2f4eae13-3357-42fb-8653-b71ea140f8f1"
+                            UserId = "ebb7e8be-5379-498a-baef-9d589bb18fbe",
+                            RoleId = "be539ba6-e42a-4fe8-933b-aa1ffe68162c"
                         },
                         new
                         {
-                            UserId = "83eac18f-647a-4400-94c7-87caa344cb67",
-                            RoleId = "dc93dd4b-5dec-44e8-804e-af814eed1cd4"
+                            UserId = "5c725ddb-54c0-4f09-8382-d0c00196bb3a",
+                            RoleId = "bbb48dfb-0d0b-48e1-a299-3adcaa3e7ce9"
                         },
                         new
                         {
-                            UserId = "9f9762a2-1caf-425f-8497-9b97776e725e",
-                            RoleId = "070b7596-c5f5-4866-80d6-30b5743c35fd"
+                            UserId = "fa4315ef-cfaf-4c49-a22c-f46d9e3a2529",
+                            RoleId = "a98cc1f1-ac15-404a-a01b-518b012eaa8b"
                         });
                 });
 
