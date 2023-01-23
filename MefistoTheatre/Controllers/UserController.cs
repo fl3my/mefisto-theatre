@@ -42,7 +42,9 @@ namespace MefistoTheatre.Controllers
                     UserId = user.Id,
                     FullName = fullname,
                     Email = user.Email,
-                    Role = await GetUserRole(user)
+                    Role = await GetUserRole(user),
+                    IsSuspended = user.IsSuspended,
+                    Joined = user.Joined
                 };
 
                 usersViewModel.Add(viewModel);

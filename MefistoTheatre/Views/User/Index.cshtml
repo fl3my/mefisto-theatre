@@ -28,15 +28,22 @@
                 <th>@Html.DisplayNameFor(model => model.Users![0].FullName)</th>
                 <th>@Html.DisplayNameFor(model => model.Users![0].Email)</th>
                 <th>@Html.DisplayNameFor(model => model.Users![0].Role)</th>
+                <th>@Html.DisplayNameFor(model => model.Users![0].IsSuspended)</th>
+                <th>@Html.DisplayNameFor(model => model.Users![0].Joined)</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var user in Model.Users!)
             {
-                <tr>
+                <tr class="@(user.IsSuspended ? "table-danger": null)">
                     <td>@Html.DisplayFor(modelUser => user.FullName)</td>
                     <td>@Html.DisplayFor(modelUser => user.Email)</td>
                     <td>@Html.DisplayFor(modelUser => user.Role)</td>
+                    <td>
+                        @((user.IsSuspended) ? "Yes" : "No")
+                    </td>
+                    <td>@Html.DisplayFor(modelUser => user.Joined)</td>
+
                 </tr>
             }
         </tbody>
