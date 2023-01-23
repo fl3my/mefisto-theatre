@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging.Signing;
 
 namespace MefistoTheatre.Controllers
 {
@@ -19,10 +21,12 @@ namespace MefistoTheatre.Controllers
             _roleManager = roleManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userRole, string searchString)
         {
             // Get list of users from the database asynchronously.
             var users = await _userManager.Users.ToListAsync();
+
+            var roles = _roleManager.Roles;
 
             // Create a view model.
             var usersViewModel = new List<UserViewModel>();
@@ -30,17 +34,42 @@ namespace MefistoTheatre.Controllers
             // Create a user view model for each user.
             foreach(ApplicationUser user in users)
             {
+                string fullname = user.FirstName + " " + user.LastName;
+
                 var viewModel = new UserViewModel
                 {
                     UserId = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
+                    FullName = fullname,
                     Email = user.Email,
                     Role = await GetUserRole(user)
                 };
+
                 usersViewModel.Add(viewModel);
             }
-            return View(usersViewModel);
+
+            // Check if the user has apsplied a search.
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Return all models that have the search string in the email and ignore case.
+                usersViewModel = usersViewModel
+                    .Where(s => s.FullName!.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))
+                    .ToList();
+            }
+
+            // Check if the user role filter is not null.
+            if (!String.IsNullOrEmpty(userRole))
+            {
+                // Return all users in the role.
+                usersViewModel = usersViewModel.Where(r => r.Role == userRole).ToList();
+            }
+
+            var userSearchViewModel = new UserSearchViewModel
+            {
+                Roles = new SelectList(roles),
+                Users = usersViewModel
+            };
+
+            return View(userSearchViewModel);
         }
 
         private async Task<string?> GetUserRole(ApplicationUser user)

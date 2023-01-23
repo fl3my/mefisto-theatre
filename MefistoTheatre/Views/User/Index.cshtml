@@ -1,23 +1,44 @@
 ﻿@using MefistoTheatre.Models
-@model List<MefistoTheatre.Models.UserViewModel>
+@model MefistoTheatre.Models.UserSearchViewModel
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Role</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var user in Model) {
+<form asp-controller="User" asp-action="index" method="get">
+    <div class="row g-3  align-items-end mb-2">
+        <div class="col-sm-4">
+            <label for="search" class="form-label">Full name</label>
+            <input type="text" name="SearchString" placeholder="Type name here..." class="form-control" id="search" />
+        </div>
+        <div class="col-sm-2">
+            <label for="roleSelect" class="form-label">Role</label>
+        <select asp-for="UserRole" asp-items="Model.Roles" class="form-select" id="roleSelect">
+            <option value="">All</option>
+        </select>
+        </div>
+        <div class="col-sm">
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+
+@if(Model.Users!.Count == 0) {
+    <h2 class="text-center mt-4">Sorry no users match that name.</h2>
+} else {
+    <table class="table table-hover">
+        <thead>
             <tr>
-                <td>@user.FirstName</td>
-                <td>@user.LastName</td>
-                <td>@user.Email</td>
-                <td>@user.Role</td>
+                <th>@Html.DisplayNameFor(model => model.Users![0].FullName)</th>
+                <th>@Html.DisplayNameFor(model => model.Users![0].Email)</th>
+                <th>@Html.DisplayNameFor(model => model.Users![0].Role)</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users!)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelUser => user.FullName)</td>
+                    <td>@Html.DisplayFor(modelUser => user.Email)</td>
+                    <td>@Html.DisplayFor(modelUser => user.Role)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
