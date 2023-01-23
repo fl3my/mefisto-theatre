@@ -10,5 +10,23 @@ namespace MefistoTheatre.Models
 
         [PersonalData]
         public string? LastName { get; set; }
+
+        [PersonalData]
+        public string? Address { get; set; }
+
+        [PersonalData]
+
+        public string? City { get; set; }
+
+        [PersonalData]
+
+        public string? PostCode { get; set; }
+
+        [PersonalData]
+        public DateTime DateOfBirth { get; set; }
+
+        public bool IsSuspended { get; set; }
+
+        public DateTime Joined { get; set; }
     }
 }

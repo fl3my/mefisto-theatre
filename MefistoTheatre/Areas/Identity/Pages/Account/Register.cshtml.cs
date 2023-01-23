@@ -80,6 +80,22 @@ namespace MefistoTheatre.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
+            [Required]
+            [Display(Name = "Date of Birth")]
+            public DateTime DateOfBirth { get; set; }
+
+            [Required]
+            [Display(Name = "Address")]
+            public string Address { get; set; }
+
+            [Required]
+            [Display(Name = "City")]
+            public string City { get; set; }
+
+            [Required]
+            [Display(Name = "PostCode")]
+            public string PostCode { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -123,7 +139,17 @@ namespace MefistoTheatre.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 // Create user object with custom properties.
-                var user = new ApplicationUser { FirstName = Input.FirstName, LastName = Input.LastName };
+                var user = new ApplicationUser 
+                { 
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    Address = Input.Address,
+                    City = Input.City,
+                    PostCode = Input.PostCode,
+                    DateOfBirth = Input.DateOfBirth,
+                    Joined = DateTime.Now,
+                    IsSuspended = false
+                };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
