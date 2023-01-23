@@ -1,4 +1,4 @@
-namespace MefistoTheatre.Models
+namespace MefistoTheatre.ViewModels
 {
     public class ErrorViewModel
     {

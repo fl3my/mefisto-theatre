@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MefistoTheatre.Models
+namespace MefistoTheatre.ViewModels
 {
     public class UserViewModel
     {
