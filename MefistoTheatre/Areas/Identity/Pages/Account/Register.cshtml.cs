@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using MefistoTheatre.Validators;
 
 namespace MefistoTheatre.Areas.Identity.Pages.Account
 {
@@ -81,6 +82,8 @@ namespace MefistoTheatre.Areas.Identity.Pages.Account
             public string LastName { get; set; }
 
             [Required]
+            [DataType(DataType.Date)]
+            [DateOfBirth(MinAge = 13, MaxAge = 130, ErrorMessage = "Must be over the age of 13.")]
             [Display(Name = "Date of Birth")]
             public DateTime DateOfBirth { get; set; }
 
@@ -93,6 +96,7 @@ namespace MefistoTheatre.Areas.Identity.Pages.Account
             public string City { get; set; }
 
             [Required]
+            [RegularExpression("^([Gg][Ii][Rr] 0[Aa]{2}|([A-Za-z][0-9]{1,2}|[A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2}|[A-Za-z][0-9][A-Za-z]|[A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]) {0,1}[0-9][A-Za-z]{2})$", ErrorMessage = "Invalid Postcode.")]
             [Display(Name = "PostCode")]
             public string PostCode { get; set; }
 
