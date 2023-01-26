@@ -5,6 +5,9 @@
     ViewData["Title"] = "Users";
 }
 
+<h1 class="mb-4">All Users</h1>
+
+<div class="card px-4 py-3 mb-4">
 <form asp-controller="User" asp-action="index" method="get">
     <div class="row g-3  align-items-end mb-2">
         <div class="col-sm-4">
@@ -22,6 +25,7 @@
         </div>
     </div>
 </form>
+</div>
 
 @if(Model.Users!.Count == 0) {
     <h2 class="text-center mt-4">Sorry no users match that name.</h2>
@@ -39,11 +43,11 @@
         <tbody>
             @foreach (var user in Model.Users!)
             {
-                <tr>
+                <tr class="align-middle">
                     <td>@Html.DisplayFor(modelUser => user.FullName)</td>
                     <td>@Html.DisplayFor(modelUser => user.Email)</td>
                     <td><span class="badge rounded-pill @(user.RoleColour)">@user.Role</span></td>
-                    <td>
+                    <td class="">
                         @((user.IsSuspended) ? "Yes" : "No")
                     </td>
                     <td>
