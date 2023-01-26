@@ -33,7 +33,6 @@
                 <th>@Html.DisplayNameFor(model => model.Users![0].Email)</th>
                 <th>@Html.DisplayNameFor(model => model.Users![0].Role)</th>
                 <th>@Html.DisplayNameFor(model => model.Users![0].IsSuspended)</th>
-                <th>@Html.DisplayNameFor(model => model.Users![0].Joined)</th>
                 <th>Edit</th>
             </tr>
         </thead>
@@ -43,11 +42,10 @@
                 <tr>
                     <td>@Html.DisplayFor(modelUser => user.FullName)</td>
                     <td>@Html.DisplayFor(modelUser => user.Email)</td>
-                    <td>@Html.DisplayFor(modelUser => user.Role)</td>
+                    <td><span class="badge rounded-pill @(user.RoleColour)">@user.Role</span></td>
                     <td>
                         @((user.IsSuspended) ? "Yes" : "No")
                     </td>
-                    <td>@Html.DisplayFor(modelUser => user.Joined)</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></a>
                     </td>

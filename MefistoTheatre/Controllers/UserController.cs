@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging.Signing;
+using System.Security.Claims;
 
 namespace MefistoTheatre.Controllers
 {
@@ -37,14 +38,17 @@ namespace MefistoTheatre.Controllers
             {
                 string fullname = user.FirstName + " " + user.LastName;
 
+                string? role = await GetUserRole(user);
+                string? roleColour = GetBootstrapColourForRole(role);
+
                 var viewModel = new UserViewModel
                 {
                     UserId = user.Id,
                     FullName = fullname,
                     Email = user.Email,
                     Role = await GetUserRole(user),
+                    RoleColour = roleColour,
                     IsSuspended = user.IsSuspended,
-                    Joined = user.Joined
                 };
 
                 usersViewModel.Add(viewModel);
@@ -90,19 +94,85 @@ namespace MefistoTheatre.Controllers
                 return NotFound();
             }
 
-            string fullname = user.FirstName + " " + user.LastName;
-
-            var viewModel = new UserViewModel
+            var viewModel = new UserEditViewModel
             {
                 UserId = user.Id,
-                FullName = fullname,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth,
                 Email = user.Email,
                 Role = await GetUserRole(user),
                 IsSuspended = user.IsSuspended,
-                Joined = user.Joined
+                Joined = user.Joined,
+                Roles = new SelectList(_roleManager.Roles)
             };
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserEditViewModel editViewModel)
+        {
+            editViewModel.Roles = new SelectList(_roleManager.Roles);
+
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit profile");
+                return View("Edit", editViewModel);
+            }
+          
+            // Get the user to be edited.
+            var user = await _userManager.FindByIdAsync(editViewModel.UserId);
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Edit the users role
+            var role = await GetUserRole(user);
+
+            // Prevent the admin from changing their own role.
+            if (user.Id == currentUserId)
+            {
+                ModelState.AddModelError("Role", "Cannot Change your own role.");
+                return View("Edit", editViewModel);
+            }
+
+            if (role != null)
+            {
+                // Remove the user from the role.
+                await _userManager.RemoveFromRoleAsync(user, role);
+            }
+
+            // Add the new role to the user.
+            await _userManager.AddToRoleAsync(user, editViewModel.Role);
+
+            // Edit other properties.
+            user.FirstName = editViewModel.FirstName;
+            user.LastName = editViewModel.LastName;
+            user.DateOfBirth = editViewModel.DateOfBirth;
+            user.IsSuspended = editViewModel.IsSuspended;
+            
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction("Index");
+        }
+
+        private static string GetBootstrapColourForRole(string? role)
+        {
+            if (role == null)
+            {
+                return "bg-primary";
+            }
+
+            // Use a dictionary lookup to get the colour for a role.
+            var colourDict = new Dictionary<string, string>
+            {
+                ["Admin"] = "bg-success",
+                ["Editor"] = "bg-info",
+                ["Basic"] = "bg-primary",
+                ["Staff"] = "bg-warning"
+            };
+
+            return colourDict[role];
         }
 
         private async Task<string?> GetUserRole(ApplicationUser user)
