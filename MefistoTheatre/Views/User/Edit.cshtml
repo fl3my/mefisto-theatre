@@ -1,0 +1,42 @@
+﻿@using MefistoTheatre.ViewModels
+@model MefistoTheatre.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <dl class="row">
+                <dt>
+                    @Html.DisplayNameFor(model => model.FullName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.FullName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Role)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Role)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Joined)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Joined)
+                </dd>
+            </dl>
+        </form>
+    </div>
+</div>

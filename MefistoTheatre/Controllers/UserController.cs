@@ -75,6 +75,36 @@ namespace MefistoTheatre.Controllers
             return View(userSearchViewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(string? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            string fullname = user.FirstName + " " + user.LastName;
+
+            var viewModel = new UserViewModel
+            {
+                UserId = user.Id,
+                FullName = fullname,
+                Email = user.Email,
+                Role = await GetUserRole(user),
+                IsSuspended = user.IsSuspended,
+                Joined = user.Joined
+            };
+
+            return View(viewModel);
+        }
+
         private async Task<string?> GetUserRole(ApplicationUser user)
         {
             // Return the first role in the roles list or null if empty.
