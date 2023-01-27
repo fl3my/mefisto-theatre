@@ -1,0 +1,33 @@
+﻿@using MefistoTheatre.ViewModels
+@model IEnumerable<PostViewModel>
+
+@{
+    ViewData["Title"] = "My Posts";
+}
+
+<h1>My Posts</h1>
+<hr />
+
+@if(Model.Count() == 0) {
+    <h3>Sorry you havent made any posts yet.</h3>
+    <a asp-action="create" class="btn btn-primary">Create</a>
+} else {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Summary)</th>
+                <th>@Html.DisplayNameFor(model => model.Published)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(PostViewModel post in Model) {
+                <tr>
+                    <td>@post.Title</td>
+                    <td>@post.Summary</td>
+                    <td>@post.Published</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
