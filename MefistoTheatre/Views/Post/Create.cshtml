@@ -6,3 +6,17 @@
 }
 
 <h1>Add New Post</h1>
+<hr />
+<textarea id="mytextarea">Hello, World!</textarea>
+
+@section head{
+    <script src="/lib/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            menubar: false,
+            selector: '#mytextarea',
+            promotion: false,
+            branding: false,
+        });
+    </script>
+}
