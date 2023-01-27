@@ -6,7 +6,7 @@ namespace MefistoTheatre.Models
     public class Comment
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string CommentId { get; set; }
         public string? Title { get; set; }
         public DateTime CreatedDate { get; set; }

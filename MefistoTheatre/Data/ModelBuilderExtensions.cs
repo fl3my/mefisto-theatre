@@ -90,6 +90,35 @@ namespace MefistoTheatre.Data
             });
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(userRoles);
+
+            List<Category> categories = new List<Category>();
+
+            categories.Add(new Category 
+            {
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Review" 
+            }
+            );
+            categories.Add(new Category
+            {
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Interview"
+            }
+            );
+            categories.Add(new Category
+            {
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Announcements"
+            }
+            );
+            categories.Add(new Category
+            {
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = "Features"
+            }
+            );
+
+            modelBuilder.Entity<Category>().HasData(categories);
         }
     }
 }
