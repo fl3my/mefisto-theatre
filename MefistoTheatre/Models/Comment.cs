@@ -7,11 +7,15 @@ namespace MefistoTheatre.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string CommentId { get; set; }
+        public string? CommentId { get; set; }
         public string? Title { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime PublishedAt { get; set; }
         public bool Published { get; set; }
         public string? Content { get; set; }
+
+        public string? PostId { get; set; }
+        public Post? Post { get; set; }
+
     }
 }

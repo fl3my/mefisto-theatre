@@ -7,7 +7,9 @@ namespace MefistoTheatre.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string CategoryId { get; set; }
-        public string CategoryName { get; set; }
+        public string? CategoryId { get; set; }
+        public string? CategoryName { get; set; }
+
+        public ICollection<Post>? Posts { get; set; }
     }
 }
