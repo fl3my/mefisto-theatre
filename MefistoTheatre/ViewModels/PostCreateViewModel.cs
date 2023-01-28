@@ -2,7 +2,7 @@
 
 namespace MefistoTheatre.ViewModels
 {
-    public class PostEditViewModel
+    public class PostCreateViewModel
     {
         public string? PostId { get; set; }
         public string? Title { get; set; }

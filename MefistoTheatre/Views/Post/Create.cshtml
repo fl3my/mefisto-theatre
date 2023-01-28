@@ -1,5 +1,5 @@
 ﻿@using MefistoTheatre.ViewModels
-@model PostEditViewModel
+@model PostCreateViewModel
 
 @{
     ViewData["Title"] = "Add Post";
@@ -7,14 +7,88 @@
 
 <h1>Add New Post</h1>
 <hr />
-<textarea id="mytextarea">Hello, World!</textarea>
 
-@section head{
+<form method="post">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="mb-3">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" placeholder="Enter Post Title..."/>
+                <small class="text-muted">This is the main title for the article that will show in search results.</small>
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Summary" class="control-label"></label>
+                <input asp-for="Summary" class="form-control" placeholder="Enter Summary..."/>
+                <small class="text-muted">Try and grab the readers attention with a brief description.</small>
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div>
+
+            <label name="content">Main Content</label>
+            <textarea id="mytextarea" name="content"></textarea>
+        </div>
+        <div class="col-md-4">
+            <div class="row g-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa-solid fa-upload"></i> Publish
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="flexCheckDefault"/>
+                                <label class="form-check-label" for="flexCheckDisabled">Visible</label>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success">Save Draft</button>
+                            <button type="submit" class="btn btn-primary float-end">Review</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa-solid fa-book"></i> Categories
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="flexCheckDefault" />
+                                <label class="form-check-label" for="flexCheckDisabled">Category 1</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="flexCheckDefault" />
+                                <label class="form-check-label" for="flexCheckDisabled">Category 2</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="flexCheckDefault" />
+                                <label class="form-check-label" for="flexCheckDisabled">Category 3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            Information
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Once you have completed your article and the publish option is selected it will be send to a site editor for review.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section HeadScripts {
     <script src="/lib/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
-            menubar: false,
             selector: '#mytextarea',
+            menubar: false,
             promotion: false,
             branding: false,
         });

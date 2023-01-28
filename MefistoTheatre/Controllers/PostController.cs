@@ -60,7 +60,7 @@ namespace MefistoTheatre.Controllers
         // POST: PostController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(PostCreateViewModel viewModel)
         {
             try
             {
