@@ -14,18 +14,17 @@
             <div class="mb-3">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" placeholder="Enter Post Title..."/>
-                <small class="text-muted">This is the main title for the article that will show in search results.</small>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Summary" class="control-label"></label>
                 <input asp-for="Summary" class="form-control" placeholder="Enter Summary..."/>
-                <small class="text-muted">Try and grab the readers attention with a brief description.</small>
                 <span asp-validation-for="Summary" class="text-danger"></span>
             </div>
 
-            <label name="content">Main Content</label>
-            <textarea id="mytextarea" name="content"></textarea>
+            <label asp-for="Content" class="control-label"></label>
+            <textarea asp-for="Content" id="mytextarea"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
         </div>
         <div class="col-md-4">
             <div class="row g-4">
@@ -35,45 +34,27 @@
                             <i class="fa-solid fa-upload"></i> Publish
                         </div>
                         <div class="card-body">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="flexCheckDefault"/>
-                                <label class="form-check-label" for="flexCheckDisabled">Visible</label>
-                            </div>
+                            <p class="card-text">If the post is not ready to be added to the blog select <b>Save Draft</b>. If the post is ready select <b>Review</b> and the post will be sent to the editors. If the article is approved, it will be made visible on the website.</p>
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-success">Save Draft</button>
-                            <button type="submit" class="btn btn-primary float-end">Review</button>
+                            <button type="submit" class="btn btn-primary float-end">Publish</button>
                         </div>
                     </div>
                 </div>
                 <div class="col md-12">
                     <div class="card">
                         <div class="card-header">
-                            <i class="fa-solid fa-book"></i> Categories
+                            <i class="fa-solid fa-book"></i> Category
                         </div>
                         <div class="card-body">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="flexCheckDefault" />
-                                <label class="form-check-label" for="flexCheckDisabled">Category 1</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="flexCheckDefault" />
-                                <label class="form-check-label" for="flexCheckDisabled">Category 2</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="flexCheckDefault" />
-                                <label class="form-check-label" for="flexCheckDisabled">Category 3</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            Information
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">Once you have completed your article and the publish option is selected it will be send to a site editor for review.</p>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                            @foreach(Category category in Model.Categories!){
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" asp-for="CategoryId" value="@category.CategoryId">
+                                    <label class="form-check-label" asp-for="CategoryId">@category.CategoryName</label>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,9 @@
 ﻿using MefistoTheatre.Data;
+using MefistoTheatre.Models;
 using MefistoTheatre.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -52,24 +54,47 @@ namespace MefistoTheatre.Controllers
         }
 
         // GET: PostController/Create
-        public ActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            IEnumerable<Category> categoryList = await _dbContext.Categories.ToListAsync();
+
+            var viewModel = new PostCreateViewModel()
+            {
+                Categories = categoryList
+            };
+            return View(viewModel);
         }
 
         // POST: PostController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(PostCreateViewModel viewModel)
+        public async Task<IActionResult> Create(PostCreateViewModel viewModel)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                IEnumerable<Category> categoryList = await _dbContext.Categories.ToListAsync(); ;
+                viewModel.Categories = categoryList;
+                return View(viewModel);
             }
-            catch
+
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            Post post = new Post()
             {
-                return View();
-            }
+                Title = viewModel.Title,
+                Summary = viewModel.Summary,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                Published = false,
+                Content = viewModel.Content,
+                CategoryId = viewModel.CategoryId,
+                AuthorId = currentUserId,
+            };
+
+            await _dbContext.AddAsync(post);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
 
         // GET: PostController/Edit/5

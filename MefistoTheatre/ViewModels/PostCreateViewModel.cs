@@ -1,19 +1,21 @@
 ﻿using MefistoTheatre.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace MefistoTheatre.ViewModels
 {
     public class PostCreateViewModel
     {
         public string? PostId { get; set; }
+        [Required]
         public string? Title { get; set; }
+        [Required]
         public string? Summary { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
-        public DateTime PublishedAt { get; set; }
-        public bool Published { get; set; }
-        public string? Content { get; set; }
 
+        [Required]
+        public string? Content { get; set; }
+        [Required(ErrorMessage = "Category is required.")]
         public string? CategoryId { get; set; }
-        public Category? Category { get; set; }
+
+        public IEnumerable<Category>? Categories { get; set; }
     }
 }

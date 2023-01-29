@@ -12,7 +12,7 @@ namespace MefistoTheatre.Models
         public string? Summary { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
-        public DateTime PublishedAt { get; set; }
+        public DateTime? PublishedAt { get; set; }
         public bool Published { get; set; }
         public string? Content { get; set; }
 
