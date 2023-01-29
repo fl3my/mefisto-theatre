@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using MefistoTheatre.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace MefistoTheatre.Models
+namespace MefistoTheatre.ViewModels
 {
-    public class Post
+    public class PostEditViewModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string? PostId { get; set; }
         public string? Title { get; set; }
         public string? Summary { get; set; }
@@ -18,9 +16,6 @@ namespace MefistoTheatre.Models
         public string? Content { get; set; }
 
         public string? CategoryId { get; set; }
-        public Category? Category { get; set; }
-        public string? AuthorId { get; set; }
-        public ApplicationUser? Author { get; set; }
-        public ICollection<Comment>? Comments { get; set; }
+        public IEnumerable<Category>? Categories { get; set; }
     }
 }

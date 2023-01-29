@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 
 namespace MefistoTheatre.Controllers
 {
@@ -68,17 +70,20 @@ namespace MefistoTheatre.Controllers
         // POST: PostController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PostCreateViewModel viewModel)
+        public async Task<IActionResult> Create(string buttonValue, PostCreateViewModel viewModel)
         {
+            // Check if the model state is valid.
             if (!ModelState.IsValid)
             {
-                IEnumerable<Category> categoryList = await _dbContext.Categories.ToListAsync(); ;
+                IEnumerable<Category> categoryList = await _dbContext.Categories.ToListAsync();
                 viewModel.Categories = categoryList;
                 return View(viewModel);
             }
 
+            // Get the current user.
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            // Bind the viewmodel to the domain model.
             Post post = new Post()
             {
                 Title = viewModel.Title,
@@ -91,6 +96,13 @@ namespace MefistoTheatre.Controllers
                 AuthorId = currentUserId,
             };
 
+            if (buttonValue == "save")
+                post.ToBeReviewed = false;
+
+            if (buttonValue == "publish")
+                post.ToBeReviewed = true;
+
+            // Add the Post to the database.
             await _dbContext.AddAsync(post);
             await _dbContext.SaveChangesAsync();
 
@@ -98,24 +110,79 @@ namespace MefistoTheatre.Controllers
         }
 
         // GET: PostController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
-            return View();
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var post = await _dbContext.Posts.Where(p => p.PostId == id).FirstOrDefaultAsync();
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the post belongs to the user.
+            if (currentUserId != post.AuthorId)
+            {
+                return NotFound();
+            }
+
+            // Get the possible categories.
+            IEnumerable<Category> categoryList = await _dbContext.Categories.ToListAsync();
+
+            // Bind the post data to the viewModel.
+            var viewModel = new PostEditViewModel()
+            {
+                Title = post.Title,
+                Summary = post.Summary,
+                CreatedDate = post.CreatedDate,
+                UpdatedDate = post.UpdatedDate,
+                Published = post.Published,
+                ToBeReviewed = post.ToBeReviewed,
+                Content = post.Content,
+                CategoryId = post.CategoryId,
+                Categories = categoryList
+            };
+
+            return View(viewModel);
         }
 
         // POST: PostController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(string id, string buttonValue, PostEditViewModel viewModel)
         {
-            try
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var post = await _dbContext.Posts.Where(p => p.PostId == id).FirstOrDefaultAsync();
+
+            if (post == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
+
+            // Check if the post belongs to the user.
+            if (currentUserId != post.AuthorId)
             {
-                return View();
+                return NotFound();
             }
+
+            if (buttonValue == "save")
+                post.ToBeReviewed = false;
+
+            if (buttonValue == "publish")
+                post.ToBeReviewed = true;
+
+            post.Title = viewModel.Title;
+            post.Summary = viewModel.Summary;
+            post.UpdatedDate = DateTime.Now;
+            post.Content = viewModel.Content;
+            post.CategoryId = viewModel.CategoryId;
+
+            _dbContext.Posts.Update(post);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
 
         // GET: PostController/Delete/5
