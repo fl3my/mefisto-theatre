@@ -44,6 +44,7 @@ namespace MefistoTheatre.Controllers
             {
                 var viewModel = new PostViewModel
                 {
+                    PostId = userPost.PostId,
                     Title = userPost.Title,
                     Summary = userPost.Summary,
                     Status = userPost.Status,

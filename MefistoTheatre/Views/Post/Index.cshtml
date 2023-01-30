@@ -19,6 +19,7 @@
                 <th>@Html.DisplayNameFor(model => model.Title)</th>
                 <th>@Html.DisplayNameFor(model => model.Summary)</th>
                 <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>Edit</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,7 @@
                     <td>@post.Title</td>
                     <td>@post.Summary</td>
                     <td>@post.Status</td>
+                    <td><a asp-action="edit" asp-route-id="@post.PostId"><i class="fa-solid fa-pen-to-square"></i></a></td>
                 </tr>
             }
         </tbody>
