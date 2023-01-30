@@ -126,12 +126,19 @@ namespace MefistoTheatre.Controllers
                 return NotFound();
             }
 
+            // Only allow the logged in user to edit draft posts.
+            if(post.Status != PostStatus.Draft)
+            {
+                return NotFound();
+            }
+
             // Get the possible categories.
             IEnumerable<Category> categoryList = await _dbContext.Categories.ToListAsync();
 
             // Bind the post data to the viewModel.
             var viewModel = new PostEditViewModel()
             {
+                PostId = post.PostId,
                 Title = post.Title,
                 Summary = post.Summary,
                 CreatedDate = post.CreatedDate,
@@ -239,7 +246,13 @@ namespace MefistoTheatre.Controllers
                 return NotFound();
             }
 
-            return View();
+            var viewModel = new PostDeleteViewModel()
+            {
+                PostId = post.PostId,
+                Title = post.Title
+            };
+
+            return View(viewModel);
         }
 
         // POST: PostController/Delete/5

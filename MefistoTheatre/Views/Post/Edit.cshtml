@@ -31,7 +31,6 @@
         </div>
         <div class="col-md-4">
             <div class="row g-4">
-
                 <div class="col md-12">
                     <div class="card text-white bg-primary">
                         <div class="card-header">
@@ -42,15 +41,6 @@
                             <li class="list-group-item">
                                 <p class="mb-1">@Model.Status</p>
                             </li>
-  
-                            @if (Model.Status == PostStatus.Published)
-                            {
-                                <li class="list-group-item">
-                                    <p class="mb-1">Published at</p>
-                                    <p class="mb-1">@Model.PublishedAt</p>
-                                </li>
-                            }
-    
                             <li class="list-group-item">
                                 <p class="mb-1">Created on</p>
                                 <p class="mb-1">@Model.CreatedDate</p>
@@ -78,7 +68,7 @@
                     </div>
                 </div>
 
-                <div class="col md-12">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <i class="fa-solid fa-book"></i> Category
@@ -94,6 +84,9 @@
                             }
                         </div>
                     </div>
+                </div>
+                <div class="col-md-12">
+                    <a asp-action="delete" asp-route-id="@Model.PostId" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>
