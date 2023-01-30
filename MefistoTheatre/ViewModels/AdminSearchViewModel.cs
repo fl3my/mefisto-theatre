@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MefistoTheatre.ViewModels
 {
-    public class ReviewPostSearchViewModel
+    public class AdminSearchViewModel
     {
-        public List<ReviewPostViewModel>? Posts { get; set; }
+        public List<AdminViewModel>? Posts { get; set; }
         public PostStatus? Status { get; set; }
         public string? SearchString { get; set; }
     }

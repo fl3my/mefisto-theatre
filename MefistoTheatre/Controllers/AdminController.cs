@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MefistoTheatre.Controllers
 {
-    public class ReviewPostController : Controller
+    public class AdminController : Controller
     {
         // Create a instance of the database.
         private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReviewPostController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public AdminController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -27,21 +27,21 @@ namespace MefistoTheatre.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ViewAll(PostStatus? postStatus, string searchString)
+        public async Task<IActionResult> AllPosts(PostStatus? postStatus, string searchString)
         {
 
             // Get all the posts that belong to the current user.
             var userPosts = await _dbContext.Posts.ToListAsync();
 
             // Create a list to store all the values in the viewModel.
-            var reviewPostsViewModel = new List<ReviewPostViewModel>();
+            var adminViewModel = new List<AdminViewModel>();
 
             foreach (var userPost in userPosts)
             {
                 var user = await _userManager.FindByIdAsync(userPost.AuthorId);
                 string authorFullName = user.FirstName + " " + user.LastName;
 
-                var viewModel = new ReviewPostViewModel
+                var viewModel = new AdminViewModel
                 {
                     Title = userPost.Title,
                     AuthorName = authorFullName,
@@ -49,14 +49,14 @@ namespace MefistoTheatre.Controllers
                     Status = userPost.Status,
                 };
 
-                reviewPostsViewModel.Add(viewModel);
+                adminViewModel.Add(viewModel);
             }
 
             // Check if the user has apsplied a search.
             if (!String.IsNullOrEmpty(searchString))
             {
                 // Return all models that have the search string in the title and ignore case.
-                reviewPostsViewModel = reviewPostsViewModel
+                adminViewModel = adminViewModel
                     .Where(s => s.Title!.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))
                     .OrderByDescending(d => d.CreatedDate)
                     .ToList();
@@ -64,19 +64,19 @@ namespace MefistoTheatre.Controllers
 
             if (postStatus != null)
             {
-                reviewPostsViewModel = reviewPostsViewModel.Where(s => s.Status == postStatus)
+                adminViewModel = adminViewModel.Where(s => s.Status == postStatus)
                     .OrderByDescending(d => d.CreatedDate)
                     .ToList();
             }
 
-            var reviewPostSearchViewModel = new ReviewPostSearchViewModel
+            var adminSearchViewModel = new AdminSearchViewModel
             {
-                Posts = reviewPostsViewModel,
+                Posts = adminViewModel,
                 Status = postStatus,
                 SearchString = searchString
             };
 
-            return View(reviewPostSearchViewModel);
+            return View(adminSearchViewModel);
         }
     }
 }
