@@ -1,4 +1,5 @@
-﻿using MefistoTheatre.Models;
+﻿using MefistoTheatre.Enums;
+using MefistoTheatre.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace MefistoTheatre.ViewModels
@@ -11,8 +12,7 @@ namespace MefistoTheatre.ViewModels
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public DateTime? PublishedAt { get; set; }
-        public bool Published { get; set; }
-        public bool ToBeReviewed { get; set; }
+        public PostStatus Status { get; set; }
         public string? Content { get; set; }
 
         public string? CategoryId { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MefistoTheatre.Enums;
 
 namespace MefistoTheatre.Models
 {
@@ -13,8 +14,7 @@ namespace MefistoTheatre.Models
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public DateTime? PublishedAt { get; set; }
-        public bool Published { get; set; }
-        public bool ToBeReviewed { get; set; }
+        public PostStatus Status { get; set; }
         public string? Content { get; set; }
 
         public string? CategoryId { get; set; }

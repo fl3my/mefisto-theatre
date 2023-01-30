@@ -1,4 +1,6 @@
-﻿namespace MefistoTheatre.ViewModels
+﻿using MefistoTheatre.Enums;
+
+namespace MefistoTheatre.ViewModels
 {
     public class PostViewModel
     {
@@ -8,6 +10,6 @@
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public DateTime PublishedAt { get; set; }
-        public bool Published { get; set; }
+        public PostStatus Status { get; set; }
     }
 }

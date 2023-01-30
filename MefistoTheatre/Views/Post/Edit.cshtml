@@ -1,4 +1,5 @@
 ﻿@using MefistoTheatre.ViewModels
+@using MefistoTheatre.Enums
 @model PostEditViewModel
 
 @{
@@ -36,28 +37,18 @@
                         </div>
                         <ul class="list-group list-group-flush">
 
-                            @if (Model.ToBeReviewed)
-                            {
-                                <li class="list-group-item">
-                                    <p class="mb-1">Sent for review</p>
-                                </li>
-                            } else {
-                                <li class="list-group-item">
-                                    <p class="mb-1">DRAFT POST</p>
-                                </li>
-                            }
-
-                            @if (Model.Published)
+                            <li class="list-group-item">
+                                <p class="mb-1">@Model.Status</p>
+                            </li>
+  
+                            @if (Model.Status == PostStatus.Published)
                             {
                                 <li class="list-group-item">
                                     <p class="mb-1">Published at</p>
                                     <p class="mb-1">@Model.PublishedAt</p>
                                 </li>
                             }
-                            else
-                            {
-                                <li class="list-group-item">Post not published.</li>
-                            }
+    
                             <li class="list-group-item">
                                 <p class="mb-1">Created on</p>
                                 <p class="mb-1">@Model.CreatedDate</p>

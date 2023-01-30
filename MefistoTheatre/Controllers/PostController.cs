@@ -1,4 +1,5 @@
 ﻿using MefistoTheatre.Data;
+using MefistoTheatre.Enums;
 using MefistoTheatre.Models;
 using MefistoTheatre.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -89,17 +90,14 @@ namespace MefistoTheatre.Controllers
                 Summary = viewModel.Summary,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
-                Published = false,
+                Status = PostStatus.Draft,
                 Content = viewModel.Content,
                 CategoryId = viewModel.CategoryId,
                 AuthorId = currentUserId,
             };
 
-            if (buttonValue == "save")
-                post.ToBeReviewed = false;
-
             if (buttonValue == "publish")
-                post.ToBeReviewed = true;
+                post.Status = PostStatus.ToBeReviewed;
 
             // Add the Post to the database.
             await _dbContext.AddAsync(post);
@@ -136,8 +134,7 @@ namespace MefistoTheatre.Controllers
                 Summary = post.Summary,
                 CreatedDate = post.CreatedDate,
                 UpdatedDate = post.UpdatedDate,
-                Published = post.Published,
-                ToBeReviewed = post.ToBeReviewed,
+                Status = post.Status,
                 Content = post.Content,
                 CategoryId = post.CategoryId,
                 Categories = categoryList
@@ -172,19 +169,18 @@ namespace MefistoTheatre.Controllers
 
                 viewModel.CreatedDate = post.CreatedDate;
                 viewModel.UpdatedDate = post.UpdatedDate;
-                viewModel.Published = post.Published;
+                viewModel.Status = post.Status;
                 viewModel.PublishedAt = post.PublishedAt;
-                viewModel.ToBeReviewed = post.ToBeReviewed;
                 viewModel.Categories = categoryList;
 
                 return View(viewModel);
             }
 
             if (buttonValue == "save")
-                post.ToBeReviewed = false;
+                post.Status = PostStatus.Draft;
 
             if (buttonValue == "publish")
-                post.ToBeReviewed = true;
+                post.Status = PostStatus.ToBeReviewed;
 
             post.Title = viewModel.Title;
             post.Summary = viewModel.Summary;
