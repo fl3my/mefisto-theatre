@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
-namespace MefistoTheatre.ViewModels
+namespace MefistoTheatre.ViewModels.User
 {
     public class UserEditViewModel
     {

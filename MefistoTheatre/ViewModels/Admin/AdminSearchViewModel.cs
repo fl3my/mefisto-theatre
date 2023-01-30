@@ -1,7 +1,7 @@
 ﻿using MefistoTheatre.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace MefistoTheatre.ViewModels
+namespace MefistoTheatre.ViewModels.Admin
 {
     public class AdminSearchViewModel
     {

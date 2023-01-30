@@ -1,5 +1,5 @@
 ﻿using MefistoTheatre.Models;
-using MefistoTheatre.ViewModels;
+using MefistoTheatre.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

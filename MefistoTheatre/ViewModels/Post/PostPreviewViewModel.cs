@@ -1,4 +1,4 @@
-﻿namespace MefistoTheatre.ViewModels
+﻿namespace MefistoTheatre.ViewModels.Post
 {
     public class PostPreviewViewModel
     {

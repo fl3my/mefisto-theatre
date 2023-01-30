@@ -1,7 +1,7 @@
 ﻿using MefistoTheatre.Data;
 using MefistoTheatre.Enums;
 using MefistoTheatre.Models;
-using MefistoTheatre.ViewModels;
+using MefistoTheatre.ViewModels.Post;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

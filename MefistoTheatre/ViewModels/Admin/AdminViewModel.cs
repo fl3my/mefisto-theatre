@@ -1,6 +1,6 @@
 ﻿using MefistoTheatre.Enums;
 
-namespace MefistoTheatre.ViewModels
+namespace MefistoTheatre.ViewModels.Admin
 {
     public class AdminViewModel
     {

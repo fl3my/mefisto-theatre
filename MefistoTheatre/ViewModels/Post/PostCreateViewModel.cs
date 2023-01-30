@@ -1,7 +1,7 @@
 ﻿using MefistoTheatre.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace MefistoTheatre.ViewModels
+namespace MefistoTheatre.ViewModels.Post
 {
     public class PostCreateViewModel
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace MefistoTheatre.ViewModels
+namespace MefistoTheatre.ViewModels.User
 {
     public class UserSearchViewModel
     {
