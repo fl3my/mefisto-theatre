@@ -111,7 +111,7 @@ namespace MefistoTheatre.Controllers
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var post = await _dbContext.Posts.Where(p => p.PostId == id).FirstOrDefaultAsync();
+            var post = await _dbContext.Posts.FindAsync(id);
 
             if (post == null)
             {
@@ -150,7 +150,7 @@ namespace MefistoTheatre.Controllers
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var post = await _dbContext.Posts.Where(p => p.PostId == id).FirstOrDefaultAsync();
+            var post = await _dbContext.Posts.FindAsync(id);
 
             if (post == null)
             {
@@ -196,7 +196,12 @@ namespace MefistoTheatre.Controllers
 
         public async Task<IActionResult> Preview(string id)
         {
-            var post = await _dbContext.Posts.Where(p => p.PostId == id).FirstOrDefaultAsync();
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var post = await _dbContext.Posts.FindAsync(id);
 
             if (post == null)
             {
@@ -218,24 +223,44 @@ namespace MefistoTheatre.Controllers
         }
 
         // GET: PostController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(string? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var post = await _dbContext.Posts.FindAsync(id);
+
+            if(post == null)
+            {
+                return NotFound();
+            }
+
             return View();
         }
 
         // POST: PostController/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            try
+            if(_dbContext.Posts == null)
             {
-                return RedirectToAction(nameof(Index));
+                return Problem("Entity set 'ApplicationDbContext.Posts' is null.");
             }
-            catch
+
+            var post = await _dbContext.Posts.FindAsync(id);
+
+            if (post == null)
             {
-                return View();
+                return NotFound();
             }
+
+            _dbContext.Posts.Remove(post);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
