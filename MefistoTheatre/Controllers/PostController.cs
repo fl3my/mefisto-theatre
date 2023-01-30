@@ -2,13 +2,10 @@
 using MefistoTheatre.Models;
 using MefistoTheatre.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 
 namespace MefistoTheatre.Controllers
 {
@@ -17,10 +14,12 @@ namespace MefistoTheatre.Controllers
     {
         // Create a instance of the database.
         private readonly ApplicationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PostController(ApplicationDbContext dbContext)
+        public PostController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
 
         // GET: PostController
@@ -167,6 +166,20 @@ namespace MefistoTheatre.Controllers
                 return NotFound();
             }
 
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<Category> categoryList = await _dbContext.Categories.ToListAsync();
+
+                viewModel.CreatedDate = post.CreatedDate;
+                viewModel.UpdatedDate = post.UpdatedDate;
+                viewModel.Published = post.Published;
+                viewModel.PublishedAt = post.PublishedAt;
+                viewModel.ToBeReviewed = post.ToBeReviewed;
+                viewModel.Categories = categoryList;
+
+                return View(viewModel);
+            }
+
             if (buttonValue == "save")
                 post.ToBeReviewed = false;
 
@@ -183,6 +196,29 @@ namespace MefistoTheatre.Controllers
             await _dbContext.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Preview(string id)
+        {
+            var post = await _dbContext.Posts.Where(p => p.PostId == id).FirstOrDefaultAsync();
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByIdAsync(post.AuthorId);
+            string authorName = user.FirstName + " " + user.LastName;
+
+            var viewModel = new PostPreviewViewModel()
+            {
+                Title = post.Title,
+                Summary = post.Summary,
+                Content = post.Content,
+                AuthorName = authorName
+            };
+
+            return View(viewModel);
         }
 
         // GET: PostController/Delete/5
