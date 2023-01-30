@@ -1,7 +1,24 @@
-﻿
+﻿@using MefistoTheatre.Enums
+@using MefistoTheatre.ViewModels.Admin
+@model AdminDashboardViewModel
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Admin";
 }
 
-<h1>Index</h1>
+<h1>Admin Dashboard</h1>
+<hr />
 
+<div class="d-grid gap-2 col-6 mx-auto">
+    <a asp-action="AllPosts" asp-route-postStatus="@PostStatus.ToBeReviewed" type="button" class="btn btn-primary position-relative">
+        Posts to be Reviewed
+        @if(Model.PublishedPostCount > 0) {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                @Model.PublishedPostCount
+                <span class="visually-hidden">Unreviewed posts</span>
+            </span>
+        }
+    </a>
+    <a asp-action="AllPosts" asp-route-postStatus="@PostStatus.Published" type="button" class="btn btn-outline-primary">View all published</a>
+    <a asp-action="AllPosts" type="button" class="btn btn-outline-primary">View all posts</a>
+</div>

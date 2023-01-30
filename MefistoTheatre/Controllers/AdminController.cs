@@ -2,12 +2,14 @@
 using MefistoTheatre.Enums;
 using MefistoTheatre.Models;
 using MefistoTheatre.ViewModels.Admin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace MefistoTheatre.Controllers
 {
+    [Authorize(Roles = "Admin, Editor")]
     public class AdminController : Controller
     {
         // Create a instance of the database.
@@ -21,10 +23,17 @@ namespace MefistoTheatre.Controllers
         }
 
         // GET: PostController
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
+            int totalPublishedPosts = _dbContext.Posts.Where(s => s.Status == PostStatus.ToBeReviewed).Count();
+
+            var viewModel = new AdminDashboardViewModel
+            {
+                PublishedPostCount = totalPublishedPosts
+            };
+
             // Show the user how many post have to be reviewed and publised.
-            return View();
+            return View(viewModel);
         }
 
         public async Task<IActionResult> AllPosts(PostStatus? postStatus, string searchString)
