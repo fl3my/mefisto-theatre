@@ -46,6 +46,7 @@ namespace MefistoTheatre.Controllers
                 {
                     Title = userPost.Title,
                     Summary = userPost.Summary,
+                    Status = userPost.Status,
                     CreatedDate = userPost.CreatedDate
                 };
 

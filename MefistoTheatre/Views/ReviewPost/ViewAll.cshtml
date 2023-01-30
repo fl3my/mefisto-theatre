@@ -1,0 +1,56 @@
+﻿@using MefistoTheatre.Enums
+@using MefistoTheatre.ViewModels
+@model ReviewPostSearchViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="card px-4 py-3 mb-4">
+    <form asp-controller="ReviewPost" asp-action="index" method="get">
+        <div class="row g-3  align-items-end mb-2">
+            <div class="col-sm-4">
+                <label for="search" class="form-label">Post title</label>
+                <input type="text" asp-for="SearchString" placeholder="Type name here..." class="form-control"/>
+            </div>
+            <div class="col-sm-2">
+                <label asp-for="Status" class="form-label"></label>
+                <select asp-for="Status" asp-items="@Html.GetEnumSelectList<PostStatus>()" class="form-select" name="postStatus">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-sm">
+                <input type="submit" value="Search" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+
+@if (Model.Posts!.Count == 0)
+{
+    <h2 class="text-center mt-4">Sorry not found.</h2>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Posts![0].Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Posts![0].AuthorName)</th>
+                <th>@Html.DisplayNameFor(model => model.Posts![0].CreatedDate)</th>
+                <th>@Html.DisplayNameFor(model => model.Posts![0].Status)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var post in Model.Posts!)
+            {
+                <tr class="align-middle">
+                    <td>@Html.DisplayFor(modelPost => post.Title)</td>
+                    <td>@Html.DisplayFor(modelPost => post.AuthorName)</td>
+                    <td>@Html.DisplayFor(modelPost => post.CreatedDate)</td>
+                    <td>@Html.DisplayFor(modelPost => post.Status)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
