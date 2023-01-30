@@ -32,7 +32,7 @@ namespace MefistoTheatre.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await _dbContext.AddAsync(category);
                 await _dbContext.SaveChangesAsync();

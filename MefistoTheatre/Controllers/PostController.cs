@@ -36,11 +36,11 @@ namespace MefistoTheatre.Controllers
 
             // Get all the posts that belong to the current user.
             var userPosts = await _dbContext.Posts.Where(p => p.AuthorId == currentUserId).ToListAsync();
-            
+
             // Create a list to store all the values in the viewModel.
             var PostViewModels = new List<PostViewModel>();
 
-            foreach(var userPost in userPosts)
+            foreach (var userPost in userPosts)
             {
                 var viewModel = new PostViewModel
                 {
@@ -197,7 +197,7 @@ namespace MefistoTheatre.Controllers
 
         public async Task<IActionResult> Preview(string id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -233,7 +233,7 @@ namespace MefistoTheatre.Controllers
 
             var post = await _dbContext.Posts.FindAsync(id);
 
-            if(post == null)
+            if (post == null)
             {
                 return NotFound();
             }
@@ -246,7 +246,7 @@ namespace MefistoTheatre.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if(_dbContext.Posts == null)
+            if (_dbContext.Posts == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Posts' is null.");
             }

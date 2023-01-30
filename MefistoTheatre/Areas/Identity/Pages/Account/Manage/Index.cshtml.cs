@@ -82,7 +82,7 @@ namespace MefistoTheatre.Areas.Identity.Pages.Account.Manage
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
-            
+
             Username = userName;
 
             // Add the values from the user table to the form.

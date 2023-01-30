@@ -93,10 +93,10 @@ namespace MefistoTheatre.Data
 
             List<Category> categories = new List<Category>();
 
-            categories.Add(new Category 
+            categories.Add(new Category
             {
                 CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = "Review" 
+                CategoryName = "Review"
             }
             );
             categories.Add(new Category

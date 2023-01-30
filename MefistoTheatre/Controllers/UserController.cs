@@ -33,7 +33,7 @@ namespace MefistoTheatre.Controllers
             var usersViewModel = new List<UserViewModel>();
 
             // Create a user view model for each user.
-            foreach(ApplicationUser user in users)
+            foreach (ApplicationUser user in users)
             {
                 string fullname = user.FirstName + " " + user.LastName;
 
@@ -119,7 +119,7 @@ namespace MefistoTheatre.Controllers
                 ModelState.AddModelError("", "Failed to edit profile");
                 return View("Edit", editViewModel);
             }
-          
+
             // Get the user to be edited.
             var user = await _userManager.FindByIdAsync(editViewModel.UserId);
 
@@ -149,7 +149,7 @@ namespace MefistoTheatre.Controllers
             user.LastName = editViewModel.LastName;
             user.DateOfBirth = editViewModel.DateOfBirth;
             user.IsSuspended = editViewModel.IsSuspended;
-            
+
             await _userManager.UpdateAsync(user);
 
             return RedirectToAction("Index");

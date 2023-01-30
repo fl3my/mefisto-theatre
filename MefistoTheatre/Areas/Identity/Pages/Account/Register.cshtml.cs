@@ -143,8 +143,8 @@ namespace MefistoTheatre.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 // Create user object with custom properties.
-                var user = new ApplicationUser 
-                { 
+                var user = new ApplicationUser
+                {
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     Address = Input.Address,
