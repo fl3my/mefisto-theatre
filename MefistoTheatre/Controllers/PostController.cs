@@ -112,8 +112,6 @@ namespace MefistoTheatre.Controllers
         // GET: PostController/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             var post = await _dbContext.Posts.FindAsync(id);
 
             if (post == null)
@@ -133,17 +131,20 @@ namespace MefistoTheatre.Controllers
             // Get the possible categories.
             IEnumerable<Category> categoryList = await _dbContext.Categories.ToListAsync();
 
+            // Store the current users status options to be displayed in a list.
             var postStatusList = new List<PostStatus>
             {
                 PostStatus.Draft,
                 PostStatus.ToBeReviewed,
             };
 
+            // If user is not a staff member ( so admin or editor) then add the pubish option.
             if (!User.IsInRole("Staff"))
             {
                 postStatusList.Add(PostStatus.Published);
             }
 
+            // Create the select list.
             var statusSelect = new SelectList(postStatusList);
 
             // Bind the post data to the viewModel.
@@ -169,6 +170,7 @@ namespace MefistoTheatre.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, string buttonValue, PostEditViewModel viewModel)
         {
+            // Get the current user.
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var post = await _dbContext.Posts.FindAsync(id);
@@ -186,6 +188,7 @@ namespace MefistoTheatre.Controllers
                 }
             }
 
+            // Check if the form input meets the validation.
             if (!ModelState.IsValid)
             {
                 IEnumerable<Category> categoryList = await _dbContext.Categories.ToListAsync();
@@ -202,6 +205,7 @@ namespace MefistoTheatre.Controllers
                 }
 
                 var statusSelect = new SelectList(postStatusList);
+
                 viewModel.CreatedDate = post.CreatedDate;
                 viewModel.UpdatedDate = post.UpdatedDate;
                 viewModel.Status = post.Status;
@@ -212,6 +216,7 @@ namespace MefistoTheatre.Controllers
                 return View(viewModel);
             }
 
+            // Append the post object from the database.
             post.Title = viewModel.Title;
             post.Summary = viewModel.Summary;
             post.UpdatedDate = DateTime.Now;
@@ -219,9 +224,11 @@ namespace MefistoTheatre.Controllers
             post.Content = viewModel.Content;
             post.CategoryId = viewModel.CategoryId;
 
+            // Update and save changes.
             _dbContext.Posts.Update(post);
             await _dbContext.SaveChangesAsync();
 
+            // if the user selected the preview option, redirect to the preview page.
             if (buttonValue == "preview")
                 return RedirectToAction("Preview", new { id = post.PostId });
 
@@ -230,16 +237,18 @@ namespace MefistoTheatre.Controllers
                 return RedirectToAction("Index");
             }
 
+            // Redirect the user
             return RedirectToAction("Index", "Admin");
         }
 
         public async Task<IActionResult> Preview(string id)
         {
+            // Check if post exists.
             if (id == null)
             {
                 return NotFound();
             }
-
+            
             var post = await _dbContext.Posts.FindAsync(id);
 
             if (post == null)
@@ -247,6 +256,7 @@ namespace MefistoTheatre.Controllers
                 return NotFound();
             }
 
+            // Get the user to get the users full name.
             var user = await _userManager.FindByIdAsync(post.AuthorId);
             string authorName = user.FirstName + " " + user.LastName;
 
@@ -276,6 +286,17 @@ namespace MefistoTheatre.Controllers
                 return NotFound();
             }
 
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Only allow admins or editors to delete a post.
+            if (post.AuthorId != currentUserId)
+            {
+                if (User.IsInRole("Staff"))
+                {
+                    return NotFound();
+                }
+            }
+
             var viewModel = new PostDeleteViewModel()
             {
                 PostId = post.PostId,
@@ -290,6 +311,7 @@ namespace MefistoTheatre.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            // Check if the posts table has any content.
             if (_dbContext.Posts == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Posts' is null.");
@@ -302,10 +324,11 @@ namespace MefistoTheatre.Controllers
                 return NotFound();
             }
 
+            // Remove the post from the database context and sav changes.
             _dbContext.Posts.Remove(post);
             await _dbContext.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
     }
 }
