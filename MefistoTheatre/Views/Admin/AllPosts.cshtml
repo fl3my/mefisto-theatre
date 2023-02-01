@@ -39,6 +39,7 @@ else
                 <th>@Html.DisplayNameFor(model => model.Posts![0].AuthorName)</th>
                 <th>@Html.DisplayNameFor(model => model.Posts![0].CreatedDate)</th>
                 <th>@Html.DisplayNameFor(model => model.Posts![0].Status)</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -49,6 +50,10 @@ else
                     <td>@Html.DisplayFor(modelPost => post.AuthorName)</td>
                     <td>@Html.DisplayFor(modelPost => post.CreatedDate)</td>
                     <td>@Html.DisplayFor(modelPost => post.Status)</td>
+                    <td>
+                        <a asp-controller="Post" asp-action="edit" asp-route-id="@post.PostId" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a asp-controller="Post" asp-action="preview" asp-route-id="@post.PostId" class="btn btn-secondary"><i class="fa-solid fa-eye"></i></a>
+                    </td>
                 </tr>
             }
         </tbody>

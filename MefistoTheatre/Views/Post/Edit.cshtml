@@ -6,11 +6,11 @@
     ViewData["Title"] = "Edit Post";
 }
 
-
 <a asp-action="Index" class="btn btn-primary mb-4"><i class="fa-solid fa-arrow-left"></i></a>
 
 <h1>Edit Post</h1>
 <hr />
+<div asp-validation-summary="All" class="text-danger"></div>
 <form method="post">
     <div class="row">
         <div class="col-md-8">
@@ -59,11 +59,12 @@
                             <i class="fa-solid fa-upload"></i> Publish
                         </div>
                         <div class="card-body">
-                            <p class="card-text">If the post is not ready to be added to the blog select <b>Save Draft</b>. If the post is ready select <b>Review</b> and the post will be sent to the editors. If the article is approved, it will be made visible on the website.</p>
+                            <label asp-for="Status" class="form-label"></label>
+                            <select asp-for="Status" asp-items="Model.StatusSelect" class="form-select"></select>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" name="buttonValue" value="save" class="btn btn-success">Save Draft</button>
-                            <button type="submit" name="buttonValue" value="publish" class="btn btn-primary float-end">Publish</button>
+                            <button type="submit" name="buttonValue" value="preview" class="btn btn-success">Save & Preview</button>
+                            <button type="submit" name="buttonValue" value="save" class="btn btn-primary float-end">Save</button>
                         </div>
                     </div>
                 </div>

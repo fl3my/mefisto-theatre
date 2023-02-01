@@ -52,6 +52,7 @@ namespace MefistoTheatre.Controllers
 
                 var viewModel = new AdminViewModel
                 {
+                    PostId = userPost.PostId,
                     Title = userPost.Title,
                     AuthorName = authorFullName,
                     CreatedDate = userPost.CreatedDate,

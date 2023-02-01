@@ -36,11 +36,11 @@
                     <td>@post.Summary</td>
                     <td>@post.Status</td>
                     <td>
-                        @if(post.Status == PostStatus.Draft) {
-                            <a asp-action="edit" asp-route-id="@post.PostId" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></a>
+                        @if(post.Status != PostStatus.Draft && User.IsInRole("Staff")) {
                             <a asp-action="preview" asp-route-id="@post.PostId" class="btn btn-secondary"><i class="fa-solid fa-eye"></i></a>
 
                         } else {
+                            <a asp-action="edit" asp-route-id="@post.PostId" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></a>
                             <a asp-action="preview" asp-route-id="@post.PostId" class="btn btn-secondary"><i class="fa-solid fa-eye"></i></a>
                         }
                     </td>

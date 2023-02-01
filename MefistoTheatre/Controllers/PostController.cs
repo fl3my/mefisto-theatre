@@ -5,6 +5,7 @@ using MefistoTheatre.ViewModels.Post;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -120,20 +121,30 @@ namespace MefistoTheatre.Controllers
                 return NotFound();
             }
 
-            // Check if the post belongs to the user.
-            if (currentUserId != post.AuthorId)
+            // If the post is in review or published, redirect the user as only editors and admins can edit review posts.
+            if (post.Status != PostStatus.Draft)
             {
-                return NotFound();
-            }
-
-            // Only allow the logged in user to edit draft posts.
-            if(post.Status != PostStatus.Draft)
-            {
-                return NotFound();
+                if (User.IsInRole("Staff"))
+                {
+                    return RedirectToAction("Preview", new { id = post.PostId });
+                }
             }
 
             // Get the possible categories.
             IEnumerable<Category> categoryList = await _dbContext.Categories.ToListAsync();
+
+            var postStatusList = new List<PostStatus>
+            {
+                PostStatus.Draft,
+                PostStatus.ToBeReviewed,
+            };
+
+            if (!User.IsInRole("Staff"))
+            {
+                postStatusList.Add(PostStatus.Published);
+            }
+
+            var statusSelect = new SelectList(postStatusList);
 
             // Bind the post data to the viewModel.
             var viewModel = new PostEditViewModel()
@@ -144,6 +155,7 @@ namespace MefistoTheatre.Controllers
                 CreatedDate = post.CreatedDate,
                 UpdatedDate = post.UpdatedDate,
                 Status = post.Status,
+                StatusSelect = statusSelect,
                 Content = post.Content,
                 CategoryId = post.CategoryId,
                 Categories = categoryList
@@ -166,41 +178,59 @@ namespace MefistoTheatre.Controllers
                 return NotFound();
             }
 
-            // Check if the post belongs to the user.
-            if (currentUserId != post.AuthorId)
-            {
-                return NotFound();
+            // Prevent a Staff member from changing the post status.
+            if (User.IsInRole("Staff") && post.Status != PostStatus.Draft) {
+                if (viewModel.Status != post.Status)
+                {
+                    ModelState.AddModelError("", "Sorry only an editor or and admin can edit a post once sent to review or published.");
+                }
             }
 
             if (!ModelState.IsValid)
             {
                 IEnumerable<Category> categoryList = await _dbContext.Categories.ToListAsync();
 
+                var postStatusList = new List<PostStatus>
+                {
+                    PostStatus.Draft,
+                    PostStatus.ToBeReviewed,
+                };
+
+                if (!User.IsInRole("Staff"))
+                {
+                    postStatusList.Add(PostStatus.Published);
+                }
+
+                var statusSelect = new SelectList(postStatusList);
                 viewModel.CreatedDate = post.CreatedDate;
                 viewModel.UpdatedDate = post.UpdatedDate;
                 viewModel.Status = post.Status;
+                viewModel.StatusSelect = statusSelect;
                 viewModel.PublishedAt = post.PublishedAt;
                 viewModel.Categories = categoryList;
 
                 return View(viewModel);
             }
 
-            if (buttonValue == "save")
-                post.Status = PostStatus.Draft;
-
-            if (buttonValue == "publish")
-                post.Status = PostStatus.ToBeReviewed;
-
             post.Title = viewModel.Title;
             post.Summary = viewModel.Summary;
             post.UpdatedDate = DateTime.Now;
+            post.Status = viewModel.Status;
             post.Content = viewModel.Content;
             post.CategoryId = viewModel.CategoryId;
 
             _dbContext.Posts.Update(post);
             await _dbContext.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            if (buttonValue == "preview")
+                return RedirectToAction("Preview", new { id = post.PostId });
+
+            // If the user is a staff member
+            if(User.IsInRole("Staff") || currentUserId == post.AuthorId) {
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index", "Admin");
         }
 
         public async Task<IActionResult> Preview(string id)
