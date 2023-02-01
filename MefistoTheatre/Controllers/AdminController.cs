@@ -47,6 +47,7 @@ namespace MefistoTheatre.Controllers
 
             foreach (var userPost in userPosts)
             {
+                // Get the users full name.
                 var user = await _userManager.FindByIdAsync(userPost.AuthorId);
                 string authorFullName = user.FirstName + " " + user.LastName;
 
@@ -72,6 +73,7 @@ namespace MefistoTheatre.Controllers
                     .ToList();
             }
 
+            // If the user searches by status, show posts with the selected status.
             if (postStatus != null)
             {
                 adminViewModel = adminViewModel.Where(s => s.Status == postStatus)
