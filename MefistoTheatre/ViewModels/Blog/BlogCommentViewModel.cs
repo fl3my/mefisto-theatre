@@ -1,0 +1,9 @@
+﻿namespace MefistoTheatre.ViewModels.Blog
+{
+    public class BlogCommentViewModel
+    {
+        public string? AuthorName { get; set; }
+        public DateTime PublishedAt { get; set; }
+        public string? Content { get; set; }
+    }
+}

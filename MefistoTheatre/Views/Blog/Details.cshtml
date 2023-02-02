@@ -12,5 +12,26 @@
 </article>
 
 <section>
-    <label>Comments:</label>
+    <label>All Comments:</label>
+    @if (Model.Comments != null)
+    {
+        @foreach (var comment in Model.Comments)
+        {
+            <p>@comment.AuthorName</p>
+            <p>@comment.PublishedAt</p>
+            <p>@comment.Content</p>
+        }
+    }
+    @if(User.Identity!.IsAuthenticated) {
+        <form asp-action="CreateComment">
+            <label class="form-label" asp-for="NewCommentContent">Create new comment</label>
+            <input asp-for="PostId" readonly hidden />
+            <span asp-validation-for="NewCommentContent" class="text-danger"></span>
+            <textarea asp-for="NewCommentContent" class="form-control"></textarea>
+            <button type="submit" class="btn btn-primary">Post comment</button>
+        </form>
+    } else {
+        <p>Create a account today to start commenting!</p>
+    }
+
 </section>
