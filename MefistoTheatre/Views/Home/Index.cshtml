@@ -1,8 +1,16 @@
-﻿@{
+﻿@using MefistoTheatre.ViewModels.Home
+
+@model IEnumerable<HomePostViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@foreach(var post in Model) {
+    <article>
+        <h2 class="mb-1">@post.Title</h2>
+        <p class="text-muted">@post.PublishedAt by <a href="#">@post.AuthorName</a></p>
+        @Html.Raw(post.Content)
+    </article>
+    <hr />
+}

@@ -1,33 +1,56 @@
-﻿using MefistoTheatre.Models;
+﻿using MefistoTheatre.Data;
+using MefistoTheatre.Enums;
+using MefistoTheatre.Models;
 using MefistoTheatre.ViewModels;
+using MefistoTheatre.ViewModels.Home;
+using MefistoTheatre.ViewModels.Post;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System.Diagnostics;
 
 namespace MefistoTheatre.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(UserManager<ApplicationUser> userManager, ApplicationDbContext dbContext)
         {
-            _logger = logger;
+            _dbContext = dbContext;
+            _userManager = userManager;
+        }
+        
+        public async Task<IActionResult> Index()
+        {
+            var posts = await _dbContext.Posts
+                .Where(s => s.Status == PostStatus.Published)
+                .ToListAsync();
+
+            var homeViewModel = new List<HomePostViewModel>();
+
+            foreach(Post post in posts)
+            {
+                // Get the user to get the users full name.
+                var user = await _userManager.FindByIdAsync(post.AuthorId);
+                string authorName = user.FirstName + " " + user.LastName;
+
+                var viewModel = new HomePostViewModel()
+                {
+                    Title = post.Title,
+                    Summary = post.Summary,
+                    Content = post.Content,
+                    PublishedAt = post.PublishedAt,
+                    AuthorName = authorName
+                };
+
+                homeViewModel.Add(viewModel);
+            }
+
+            return View(homeViewModel);
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

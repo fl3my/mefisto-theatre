@@ -216,6 +216,12 @@ namespace MefistoTheatre.Controllers
                 return View(viewModel);
             }
 
+            // When post is published save the time.
+            if (viewModel.Status == PostStatus.Published)
+            {
+                post.PublishedAt = DateTime.Now;
+            }
+
             // Append the post object from the database.
             post.Title = viewModel.Title;
             post.Summary = viewModel.Summary;
