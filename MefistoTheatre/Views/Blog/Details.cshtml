@@ -1,0 +1,16 @@
+﻿@using MefistoTheatre.ViewModels.Blog
+@model BlogDetailsViewModel
+
+@{
+    ViewData["Title"] = "Post";
+}
+
+<article>
+    <h2 class="mb-1">@Model.Title</h2>
+    <p class="text-muted">@Model.PublishedAt by <a href="#">@Model.AuthorName</a></p>
+    @Html.Raw(Model.Content)
+</article>
+
+<section>
+    <label>Comments:</label>
+</section>
