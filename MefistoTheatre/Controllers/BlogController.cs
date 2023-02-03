@@ -83,7 +83,9 @@ namespace MefistoTheatre.Controllers
                     // Create an individual view Model.
                     var commentViewModel = new BlogCommentViewModel()
                     {
+                        CommentId = comment.CommentId,
                         AuthorName = commentAuthor,
+                        AuthorId = commentUser.Id,
                         PublishedAt = comment.PublishedAt,
                         Content = comment.Content,
                     };
@@ -113,6 +115,14 @@ namespace MefistoTheatre.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateComment(BlogDetailsViewModel viewModel)
         {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _userManager.FindByIdAsync(currentUserId);
+
+            if(currentUser.IsSuspended)
+            {
+                ModelState.AddModelError("NewCommentContent", "Sorry you are unable to comment as you have been suspended.");
+            }
+
             if (!ModelState.IsValid)
             {
                 // Get all published posts from the database.
@@ -144,6 +154,7 @@ namespace MefistoTheatre.Controllers
                         // Create an individual view Model.
                         var commentViewModel = new BlogCommentViewModel()
                         {
+                            CommentId = comment.AuthorId,
                             AuthorName = commentAuthor,
                             PublishedAt = comment.PublishedAt,
                             Content = comment.Content,
@@ -153,7 +164,8 @@ namespace MefistoTheatre.Controllers
                         commentsViewModel.Add(commentViewModel);
                     }
                 }
-
+                
+                
                 // reorder comments viewmodel.
                 commentsViewModel = commentsViewModel.OrderBy(c => c.PublishedAt).ToList();
 
@@ -168,8 +180,6 @@ namespace MefistoTheatre.Controllers
                 };
                 return View("Details", viewModel);
             }
-
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             Comment newComment = new Comment
             {
@@ -186,5 +196,30 @@ namespace MefistoTheatre.Controllers
 
             return RedirectToAction("Details", new {id = viewModel.PostId});
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(string? id)
+        {
+            // Check if the posts table has any content.
+            if (_dbContext.Comments == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Comments' is null.");
+            }
+
+            var comment = await _dbContext.Comments.FindAsync(id);
+
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            // Remove the post from the database context and sav changes.
+            _dbContext.Comments.Remove(comment);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

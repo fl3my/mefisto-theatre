@@ -1,4 +1,5 @@
 ﻿@using MefistoTheatre.ViewModels.Blog
+@using System.Security.Claims
 @model BlogDetailsViewModel
 
 @{
@@ -20,6 +21,9 @@
             <p>@comment.AuthorName</p>
             <p>@comment.PublishedAt</p>
             <p>@comment.Content</p>
+            @if (User.IsInRole("Admin") || User.IsInRole("Editor") || User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.AuthorId){
+                <form asp-action="DeleteComment" asp-route-id="@comment.CommentId"><button type="submit">Delete</button></form>
+            }
         }
     }
     @if(User.Identity!.IsAuthenticated) {
