@@ -30,7 +30,7 @@
 @if(Model.Users!.Count == 0) {
     <h2 class="text-center mt-4">Sorry no users match that name.</h2>
 } else {
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Users![0].FullName)</th>
@@ -51,7 +51,7 @@
                         @((user.IsSuspended) ? "Yes" : "No")
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a asp-action="Edit" asp-route-id="@user.UserId" class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square fa-xl"></i></a>
                     </td>
 
                 </tr>
