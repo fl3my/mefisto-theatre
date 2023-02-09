@@ -6,6 +6,7 @@
         public string? Title { get; set; }
         public string? Summary { get; set; }
         public string? AuthorName { get; set; }
+        public int CommentCount { get; set; }
         public DateTime? PublishedAt { get; set; }
     }
 }

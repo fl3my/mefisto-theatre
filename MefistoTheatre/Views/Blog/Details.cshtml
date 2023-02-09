@@ -13,26 +13,31 @@
 </article>
 
 <section>
-    <label>All Comments:</label>
+    <label>Comments: @Model.Comments!.Count</label>
+    <hr />
     @if (Model.Comments != null)
     {
         @foreach (var comment in Model.Comments)
         {
-            <p>@comment.AuthorName</p>
-            <p>@comment.PublishedAt</p>
-            <p>@comment.Content</p>
-            @if (User.IsInRole("Admin") || User.IsInRole("Editor") || User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.AuthorId){
-                <form asp-action="DeleteComment" asp-route-id="@comment.CommentId"><button type="submit">Delete</button></form>
-            }
+            <div class="d-flex border border-primary p-4 mb-4">
+                <div class="flex-fill">
+                    <h5 class="mb-3">@comment.AuthorName says...</h5>
+                    <p>@comment.Content</p>
+                    <p class="mb-0">@comment.PublishedAt.ToString("ddd d MMM yyyy HH:mm")</p>
+                </div>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Editor") || User.FindFirstValue(ClaimTypes.NameIdentifier) == comment.AuthorId){
+                        <form asp-action="DeleteComment" asp-route-id="@comment.CommentId"><button type="submit" class="btn btn-sm btn-primary">Remove</button></form>
+                    }
+            </div>
         }
     }
     @if(User.Identity!.IsAuthenticated) {
         <form asp-action="CreateComment">
             <label class="form-label" asp-for="NewCommentContent">Create new comment</label>
             <input asp-for="PostId" readonly hidden />
-            <span asp-validation-for="NewCommentContent" class="text-danger"></span>
             <textarea asp-for="NewCommentContent" class="form-control"></textarea>
-            <button type="submit" class="btn btn-primary">Post comment</button>
+            <span asp-validation-for="NewCommentContent" class="text-danger"></span>
+            <button type="submit" class="btn btn-primary float-end m-4">Post comment</button>
         </form>
     } else {
         <p>Create a account today to start commenting!</p>

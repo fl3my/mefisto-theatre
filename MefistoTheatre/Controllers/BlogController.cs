@@ -26,6 +26,7 @@ namespace MefistoTheatre.Controllers
             // Get all published posts from the database.
             var posts = await _dbContext.Posts
                 .Where(s => s.Status == PostStatus.Published)
+                .Include(c => c.Comments)
                 .ToListAsync();
 
             var homeViewModel = new List<BlogViewModel>();
@@ -43,6 +44,7 @@ namespace MefistoTheatre.Controllers
                     Title = post.Title,
                     Summary = post.Summary,
                     PublishedAt = post.PublishedAt,
+                    CommentCount = post.Comments!.Count,
                     AuthorName = authorName
                 };
 
