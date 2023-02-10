@@ -1,10 +1,25 @@
 ﻿@using MefistoTheatre.ViewModels.Blog
-@model IEnumerable<BlogViewModel>
+@model BlogSearchViewModel
 
 @{
     ViewData["Title"] = "Blog";
 }
-@foreach (var post in Model)
+
+<div class="card px-4 py-3 mb-4">
+    <form asp-controller="Blog" asp-action="Index" method="get">
+        <div class="row g-3  align-items-end mb-2">
+            <div class="col-sm-4">
+                <label for="search" class="form-label">Search Title...</label>
+                <input asp-for="SearchString" type="text" placeholder="Type name here..." class="form-control"/>
+            </div>
+            <div class="col-sm">
+                <input type="submit" value="Search" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+
+@foreach (var post in Model.Posts!)
 {
     <article>
         <small class="text-muted">@post.PublishedAt?.ToString("ddd d MMM yyyy") by @post.AuthorName | Comments (@post.CommentCount)</small>

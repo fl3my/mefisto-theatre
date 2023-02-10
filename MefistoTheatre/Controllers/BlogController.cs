@@ -1,10 +1,12 @@
 ﻿using MefistoTheatre.Data;
 using MefistoTheatre.Enums;
 using MefistoTheatre.Models;
+using MefistoTheatre.ViewModels.Admin;
 using MefistoTheatre.ViewModels.Blog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -21,7 +23,7 @@ namespace MefistoTheatre.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string searchOrder)
         {
             // Get all published posts from the database.
             var posts = await _dbContext.Posts
@@ -29,7 +31,7 @@ namespace MefistoTheatre.Controllers
                 .Include(c => c.Comments)
                 .ToListAsync();
 
-            var homeViewModel = new List<BlogViewModel>();
+            var blogsViewModel = new List<BlogViewModel>();
 
             // Append the values from the database into a viewModel.
             foreach (Post post in posts)
@@ -48,10 +50,26 @@ namespace MefistoTheatre.Controllers
                     AuthorName = authorName
                 };
 
-                homeViewModel.Add(viewModel);
+                blogsViewModel.Add(viewModel);
             }
 
-            return View(homeViewModel);
+            // Check if the user has apsplied a search.
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // Return all models that have the search string in the title and ignore case.
+                blogsViewModel = blogsViewModel
+                    .Where(s => s.Title!.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))
+                    .OrderByDescending(d => d.PublishedAt)
+                    .ToList();
+            }
+
+            var blogSearchViewModel = new BlogSearchViewModel()
+            {
+                Posts = blogsViewModel,
+                SearchString = searchString
+            };
+
+            return View(blogSearchViewModel);
         }
 
         public async Task<IActionResult> Details(string id)
