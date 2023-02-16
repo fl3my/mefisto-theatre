@@ -5,18 +5,28 @@
     ViewData["Title"] = "Blog";
 }
 
-<div class="card px-4 py-3 mb-4">
-    <form asp-controller="Blog" asp-action="Index" method="get">
-        <div class="row g-3  align-items-end mb-2">
-            <div class="col-sm-4">
-                <label for="search" class="form-label">Search Title...</label>
-                <input asp-for="SearchString" type="text" placeholder="Type name here..." class="form-control"/>
+<button class="btn btn-danger mb-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilter">
+    Filter <i class="fa-solid fa-chevron-down"></i>
+</button>
+
+<div class="collapse" id="collapseFilter">
+    <div class="card px-4 py-3 mb-4">
+        <form asp-controller="Blog" asp-action="Index" method="get">
+            <div class="row g-3  align-items-end mb-2">
+                <div class="col-sm-4">
+                    <label for="searchTitle" class="form-label">Search Title</label>
+                    <input asp-for="SearchTitle" type="text" placeholder="Type name here..." class="form-control"/>
+                </div>
+                <div class="col-sm-4">
+                    <label for="searchAuthor" class="form-label">Search Author</label>
+                    <input asp-for="SearchAuthor" type="text" placeholder="Type author here..." class="form-control" />
+                </div>
+                <div class="col-sm">
+                    <input type="submit" value="Search" class="btn btn-primary">
+                </div>
             </div>
-            <div class="col-sm">
-                <input type="submit" value="Search" class="btn btn-primary">
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 
 @foreach (var post in Model.Posts!)

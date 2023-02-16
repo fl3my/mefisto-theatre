@@ -15,6 +15,7 @@ namespace MefistoTheatre.Models
         public string? Content { get; set; }
 
         public string? PostId { get; set; }
+        [Required]
         public Post? Post { get; set; }
 
         public string? AuthorId { get; set; }

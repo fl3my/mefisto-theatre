@@ -23,12 +23,13 @@ namespace MefistoTheatre.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string searchString, string searchOrder)
+        public async Task<IActionResult> Index(string searchTitle, string searchAuthor)
         {
             // Get all published posts from the database.
             var posts = await _dbContext.Posts
                 .Where(s => s.Status == PostStatus.Published)
                 .Include(c => c.Comments)
+                .OrderByDescending(p => p.PublishedAt)
                 .ToListAsync();
 
             var blogsViewModel = new List<BlogViewModel>();
@@ -53,12 +54,22 @@ namespace MefistoTheatre.Controllers
                 blogsViewModel.Add(viewModel);
             }
 
-            // Check if the user has apsplied a search.
-            if (!String.IsNullOrEmpty(searchString))
+            // Check if the user has applied a title search.
+            if (!String.IsNullOrEmpty(searchTitle))
             {
                 // Return all models that have the search string in the title and ignore case.
                 blogsViewModel = blogsViewModel
-                    .Where(s => s.Title!.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))
+                    .Where(s => s.Title!.Contains(searchTitle, StringComparison.InvariantCultureIgnoreCase))
+                    .OrderByDescending(d => d.PublishedAt)
+                    .ToList();
+            }
+
+            // Check if the user has applied an author search.
+            if (!String.IsNullOrEmpty(searchAuthor))
+            {
+                // Return all models that have the search string in the author and ignore case.
+                blogsViewModel = blogsViewModel
+                    .Where(s => s.AuthorName!.Contains(searchAuthor, StringComparison.InvariantCultureIgnoreCase))
                     .OrderByDescending(d => d.PublishedAt)
                     .ToList();
             }
@@ -66,7 +77,8 @@ namespace MefistoTheatre.Controllers
             var blogSearchViewModel = new BlogSearchViewModel()
             {
                 Posts = blogsViewModel,
-                SearchString = searchString
+                SearchTitle = searchTitle,
+                SearchAuthor = searchAuthor
             };
 
             return View(blogSearchViewModel);

@@ -36,7 +36,10 @@ namespace MefistoTheatre.Controllers
             }
 
             // Get all the posts that belong to the current user.
-            var userPosts = await _dbContext.Posts.Where(p => p.AuthorId == currentUserId).ToListAsync();
+            var userPosts = await _dbContext.Posts
+                .Where(p => p.AuthorId == currentUserId)
+                .OrderByDescending(p => p.UpdatedDate)
+                .ToListAsync();
 
             // Create a list to store all the values in the viewModel.
             var PostViewModels = new List<PostViewModel>();
@@ -87,7 +90,7 @@ namespace MefistoTheatre.Controllers
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             // Bind the viewmodel to the domain model.
-            Post post = new Post()
+            Post post = new()
             {
                 Title = viewModel.Title,
                 Summary = viewModel.Summary,
@@ -99,7 +102,8 @@ namespace MefistoTheatre.Controllers
                 AuthorId = currentUserId,
             };
 
-            if (buttonValue == "publish")
+            // If the review button is selected mark the post as to be reviewed.
+            if (buttonValue == "review")
                 post.Status = PostStatus.ToBeReviewed;
 
             // Add the Post to the database.
@@ -299,7 +303,7 @@ namespace MefistoTheatre.Controllers
             {
                 if (User.IsInRole("Staff"))
                 {
-                    return NotFound();
+                    return Unauthorized();
                 }
             }
 
