@@ -35,14 +35,19 @@
     </div>
 </div>
 
-@foreach (var post in Model.Posts!)
+@if(Model.Posts!.Count == 0) {
+    <h3>Sorry No Posts found.</h3>
+} else
 {
-    <article>
-        <small class="text-muted">@post.PublishedAt?.ToString("ddd d MMM yyyy") by @post.AuthorName | Comments (@post.CommentCount)</small>
-        <h2 class="mb-1">@post.Title</h2>
-        <p>
-            @post.Summary 
-            <a asp-action="Details" asp-route-id="@post.PostId" class="link-danger">Read more</a>
-    </article>
-    <hr />
+    @foreach (var post in Model.Posts!)
+    {
+        <article>
+            <small class="text-muted">@post.PublishedAt?.ToString("ddd d MMM yyyy") by <a asp-action="Index" asp-route-SearchAuthor="@post.AuthorName">@post.AuthorName</a> | Comments (@post.CommentCount)</small>
+            <h2 class="mb-1">@post.Title</h2>
+            <p>
+                @post.Summary
+                <a asp-action="Details" asp-route-id="@post.PostId" class="link-danger">Read more...</a>
+        </article>
+        <hr />
+    }
 }
