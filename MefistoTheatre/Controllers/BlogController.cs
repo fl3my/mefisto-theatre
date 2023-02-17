@@ -23,12 +23,13 @@ namespace MefistoTheatre.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string searchTitle, string searchAuthor)
+        public async Task<IActionResult> Index(string searchTitle, string searchAuthor, string searchCategory)
         {
             // Get all published posts from the database.
             var posts = await _dbContext.Posts
                 .Where(s => s.Status == PostStatus.Published)
                 .Include(c => c.Comments)
+                .Include(c => c.Category)
                 .OrderByDescending(p => p.PublishedAt)
                 .ToListAsync();
 
@@ -48,7 +49,8 @@ namespace MefistoTheatre.Controllers
                     Summary = post.Summary,
                     PublishedAt = post.PublishedAt,
                     CommentCount = post.Comments!.Count,
-                    AuthorName = authorName
+                    AuthorName = authorName,
+                    Category = post.Category
                 };
 
                 blogsViewModel.Add(viewModel);
@@ -74,11 +76,26 @@ namespace MefistoTheatre.Controllers
                     .ToList();
             }
 
+            var categoryList = await _dbContext.Categories.Select(n => n.CategoryName).ToListAsync();
+
+            var categorySelectList = new SelectList(categoryList);
+
+            // Check if the user has applied an author search.
+            if (!String.IsNullOrEmpty(searchCategory))
+            {
+                // Return all models that have the search string in the author and ignore case.
+                blogsViewModel = blogsViewModel
+                    .Where(s => s.Category?.CategoryName == searchCategory)
+                    .OrderByDescending(d => d.PublishedAt)
+                    .ToList();
+            }
+
             var blogSearchViewModel = new BlogSearchViewModel()
             {
                 Posts = blogsViewModel,
                 SearchTitle = searchTitle,
-                SearchAuthor = searchAuthor
+                SearchAuthor = searchAuthor,
+                Categories = categorySelectList
             };
 
             return View(blogSearchViewModel);

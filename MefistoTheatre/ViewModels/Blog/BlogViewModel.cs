@@ -1,4 +1,6 @@
-﻿namespace MefistoTheatre.ViewModels.Blog
+﻿using MefistoTheatre.Models;
+
+namespace MefistoTheatre.ViewModels.Blog
 {
     public class BlogViewModel
     {
@@ -8,5 +10,6 @@
         public string? AuthorName { get; set; }
         public int CommentCount { get; set; }
         public DateTime? PublishedAt { get; set; }
+        public Category? Category { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace MefistoTheatre.ViewModels.Blog
         public List<BlogViewModel>? Posts { get; set; }
         public string? SearchTitle { get; set; }
         public string? SearchAuthor { get; set; }
-
-
+        public string? SearchCategory { get; set; }
+        public SelectList? Categories { get; set; }
     }
 }

@@ -14,12 +14,18 @@
         <form asp-controller="Blog" asp-action="Index" method="get">
             <div class="row g-3  align-items-end mb-2">
                 <div class="col-sm-4">
-                    <label for="searchTitle" class="form-label">Search Title</label>
+                    <label for="SearchTitle" class="form-label">Search Title</label>
                     <input asp-for="SearchTitle" type="text" placeholder="Type name here..." class="form-control"/>
                 </div>
                 <div class="col-sm-4">
-                    <label for="searchAuthor" class="form-label">Search Author</label>
+                    <label for="SearchAuthor" class="form-label">Search Author</label>
                     <input asp-for="SearchAuthor" type="text" placeholder="Type author here..." class="form-control" />
+                </div>
+                <div class="col-sm-2">
+                    <label for="SearchCategory" class="form-label">Categories</label>
+                    <select asp-for="SearchCategory" asp-items="Model.Categories" class="form-select" id="searchCategory">
+                        <option value="">All</option>
+                    </select>
                 </div>
                 <div class="col-sm">
                     <input type="submit" value="Search" class="btn btn-primary">
