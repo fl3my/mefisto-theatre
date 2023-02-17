@@ -34,6 +34,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseStatusCodePages();
 
 app.UseAuthentication();
 app.UseAuthorization();
