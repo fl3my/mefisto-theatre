@@ -131,8 +131,11 @@ namespace MefistoTheatre.Controllers
             // Prevent the admin from changing their own role.
             if (user.Id == currentUserId)
             {
-                ModelState.AddModelError("Role", "Cannot Change your own role.");
-                return View("Edit", editViewModel);
+                if(role != editViewModel.Role)
+                {
+                    ModelState.AddModelError("Role", "Cannot Change your own role.");
+                    return View("Edit", editViewModel);
+                }
             }
 
             if (role != null)
