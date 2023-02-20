@@ -74,10 +74,12 @@ namespace MefistoTheatre.Areas.Identity.Pages.Account
         {
             // Custom properties
             [Required]
+            [RegularExpression("^[A-Z][a-z]{1,15}$", ErrorMessage = "Firstname can only be made of letters.")]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
             [Required]
+            [RegularExpression("^[A-Z][a-z]{1,15}$", ErrorMessage = "Firstname can only be made of letters.")]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 

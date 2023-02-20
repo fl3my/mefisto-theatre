@@ -117,6 +117,17 @@ namespace MefistoTheatre.Controllers
             var user = await _userManager.FindByIdAsync(post.AuthorId);
             string authorName = user.FirstName + " " + user.LastName;
 
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await _userManager.FindByIdAsync(currentUserId);
+
+            var isUserSuspended = false;
+
+            // If a user is logged in, get the logged in status
+            if (currentUser != null)
+            {
+                isUserSuspended = currentUser!.IsSuspended;
+            }
+
             // Create a comment view model so the authors name can be shown.
             var commentsViewModel = new List<BlogCommentViewModel>();
 
@@ -154,7 +165,8 @@ namespace MefistoTheatre.Controllers
                 Content = post.Content,
                 PublishedAt = post.PublishedAt,
                 AuthorName = authorName,
-                Comments = commentsViewModel
+                Comments = commentsViewModel,
+                IsSuspended = isUserSuspended
             };
 
             return View(viewModel);
@@ -225,7 +237,9 @@ namespace MefistoTheatre.Controllers
                     Content = post.Content,
                     PublishedAt = post.PublishedAt,
                     AuthorName = authorName,
-                    Comments = commentsViewModel
+                    Comments = commentsViewModel,
+                    IsSuspended = currentUser.IsSuspended,
+                    
                 };
                 return View("Details", viewModel);
             }

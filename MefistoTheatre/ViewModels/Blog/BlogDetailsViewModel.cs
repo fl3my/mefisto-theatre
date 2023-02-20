@@ -15,5 +15,6 @@ namespace MefistoTheatre.ViewModels.Blog
 
         [Required]
         public string? NewCommentContent { get; set; }
+        public bool IsSuspended { get; set; }
     }
 }
